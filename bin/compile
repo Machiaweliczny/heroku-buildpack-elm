@@ -63,8 +63,9 @@ echo "-----> Fetching dependencies"
 elm package install --yes | indent
 
 get_app_json_env() {
-    name=$1
     echo "get_app_json_env()"
+    name=$1
+    
     if ! test -f ${build}/app.json; then
         error "app.json missing."
     fi
