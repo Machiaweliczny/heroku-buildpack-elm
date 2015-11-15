@@ -7,7 +7,7 @@ indent() {
 }
 
 mkdir -p "$1/web/elm" "$2"
-build=$(cd "$1/web/elm" && pwd)
+build=$(cd "$1/web/elm/" && pwd)
 cache=$(cd "$2/" && pwd)
 buildpack=$(cd "$(dirname $0)/.." && pwd)
 
