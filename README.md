@@ -1,42 +1,42 @@
-# Heroku buildpack for Elm apps
+# Heroku buildpack for Phoenix/Elm apps
 
-Check out the example app [elm-todomvc](https://github.com/evancz/elm-todomvc). In brief:
+Simply `cd web/elm`
+And: `echo "elm-make Something.elm SomethingElse.elm --output ../../priv/static/elm.js" > elm_buildpack_make"`
 
-- Add an [`app.json`](https://github.com/evancz/elm-todomvc/blob/master/app.json) file
-  - Ensure that a second buildpack provides the web server (elm-todomvc uses the static buildpack)
-- Specify the value of `ELM_COMPILE` (command used to compile your Elm sources) in `app.json`
-- Deploy!
+Enjoy
 
-## Customizing
+First you have to add this buildpack like from heroku project root directory
+`heroku buildpacks:add --index 2 https://github.com/Machiaweliczny/heroku-buildpack-elm/`
+First you should add elixir buildpack - `heroku buildpacks:set https://github.com/HashNuke/heroku-buildpack-elixir`
 
-The buildpack aims to use the latest version of Elm by default. To specify an alternative Elm
-version, create this file in your repo:
+Also you need to provide Procfile like this:
+`echo "web: mix phoenix.server" > Procfile"` in root phoenix project directory.
+
+Also proper `config/prod.exs` shoudl look kinda like it.
+```
+use Mix.Config
+
+config :familiada, Familiada.Endpoint,
+  http: [port: {:system, "PORT"}],
+  url: [scheme: "https", host: System.get_env("HEROKU_URL"), port: 443],
+  force_ssl: [rewrite_on: [:x_forwarded_proto]],
+  secret_key_base: System.get_env("SECRET_KEY_BASE")
+
+config :logger, level: :info
+
+config :familiada, Familiada.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  username: System.get_env("DATABASE_USERNAME"),
+  password: System.get_env("DATABASE_PASSWORD"),
+  url: System.get_env("DATABASE_URL"),
+  pool_size: 20
 
 ```
-$ cat > .buildpack.env
-export ELM_VERSION=0.15
-^D
+
+So you also have to set "SECRET_KEY_BASE" (Rest of environment variables is provided by Heroku) with this cmd:
+```
+heroku config:set SECRET_KEY_BASE=<key_of_64_chars>
 ```
 
-## HACKING
+DONE
 
-### Generating and uploading binaries
-
-Binaries are generated using docker, and uploaded to s3.
-
-```
-# To generate docker image containing the binaries
-make binaries
-
-# To upload to s3
-aws configure  # creates ~/.aws/...
-make upload
-```
-
-### Updating binaries
-
-* Modify the `ELM_VERSION` env var in Dockerfile
-* `make binaries upload`
-* Modify the `ELM_VERSION` env var in `bin/compile`
-* Update CHANGELOG.md
-* git push
