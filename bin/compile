@@ -74,7 +74,8 @@ get_app_json_env() {
 }
 echo "Hello there ---> $(pwd)"
 echo "ls: $(ls)"
-ELM_COMPILE=$(get_app_json_env "ELM_COMPILE")
+# ELM_COMPILE=$(get_app_json_env "ELM_COMPILE")
+ELM_COMPILE="elm-make Chat.elm FamiliadaGame.elm --output ../../priv/static/elm.js"
 echo "-----> Compiling with ${ELM_COMPILE}"
 ${ELM_COMPILE} | indent
 
