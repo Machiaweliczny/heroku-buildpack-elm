@@ -6,11 +6,8 @@ indent() {
   sed -u 's/^/       /'
 }
 
-mkdir -p "$1/web/elm"
-1="$1/web/elm"
-
-mkdir -p "$1" "$2"
-build=$(cd "$1/" && pwd)
+mkdir -p "$1/web/elm" "$2"
+build=$(cd "$1/web/elm" && pwd)
 cache=$(cd "$2/" && pwd)
 buildpack=$(cd "$(dirname $0)/.." && pwd)
 
