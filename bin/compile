@@ -69,7 +69,7 @@ get_app_json_env() {
     fi
     python -c "import json; j=json.load(open('app.json')); print j['env']['${name}']"
 }
-
+echo "Hello there ---> $(pwd)"
 ELM_COMPILE=$(get_app_json_env "ELM_COMPILE")
 echo "-----> Compiling with ${ELM_COMPILE}"
 ${ELM_COMPILE} | indent
