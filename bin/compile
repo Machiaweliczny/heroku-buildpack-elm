@@ -5,6 +5,8 @@ set -eo pipefail
 indent() {
   sed -u 's/^/       /'
 }
+# fixik :)
+1="$1/web/elm"
 
 mkdir -p "$1" "$2"
 build=$(cd "$1/" && pwd)
