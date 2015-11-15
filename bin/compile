@@ -62,20 +62,10 @@ cd ${build}
 echo "-----> Fetching dependencies"
 elm package install --yes | indent
 
-get_app_json_env() {
-    echo "get_app_json_env()"
-    name=$1
-    
-    if ! test -f ${build}/app.json; then
-        error "app.json missing."
-    fi
-    
-    python -c "import json; j=json.load(open('app.json')); print j['env']['${name}']"
-}
-echo "Hello there ---> $(pwd)"
-echo "ls: $(ls)"
-# ELM_COMPILE=$(get_app_json_env "ELM_COMPILE")
-ELM_COMPILE="elm-make Chat.elm FamiliadaGame.elm --output ../../priv/static/elm.js"
+if ! test -f ${build}/elm_buildpack_make; then
+  error "web/elm/elm_buildpack_make is missing."
+fi
+ELM_COMPILE=$(echo "$1/web/elm/elm_buildpack_make")
 echo "-----> Compiling with ${ELM_COMPILE}"
 ${ELM_COMPILE} | indent
 
