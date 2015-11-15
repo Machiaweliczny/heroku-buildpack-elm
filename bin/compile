@@ -65,7 +65,7 @@ elm package install --yes | indent
 if ! test -f ${build}/elm_buildpack_make; then
   error "web/elm/elm_buildpack_make is missing."
 fi
-ELM_COMPILE=$(echo "$1/web/elm/elm_buildpack_make")
+ELM_COMPILE=$(cat "$1/web/elm/elm_buildpack_make")
 echo "-----> Compiling with ${ELM_COMPILE}"
 ${ELM_COMPILE} | indent
 
