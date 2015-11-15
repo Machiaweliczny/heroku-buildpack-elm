@@ -6,7 +6,7 @@ indent() {
   sed -u 's/^/       /'
 }
 
-mkdir p "$1/web/elm"
+mkdir -p "$1/web/elm"
 1="$1/web/elm"
 
 mkdir -p "$1" "$2"
